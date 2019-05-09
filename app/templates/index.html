@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+	{% with messages = get_flashed_messages() %}
+    	{% if messages %}
+    		{% for message in messages %}
+    			<div class="container">
+    				<div class="alert alert-info alert-dismissible" role="alert">
+		    			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+		    				{{ message }}
+		     		</div>
+    			</div>
+		    {% endfor %}
+  		{% endif %}
+    {% endwith %}
+    
+    <div class="container">
+    	<h1>Listado de Tareas</h1>
+    	{% if tasks.count() > 0 %}
+	    	<table class="table">
+	    		<thead>
+	    			<tr>
+	    				<th scope="col">#</th>
+	    				<th scope="col">Tarea</th>
+	    				<th scope="col">Estado</th>
+	    				<th scope="col">Actualizar Estado</th>
+	    			</tr>
+	    		</thead>
+		    	<tbody>
+	    			{% for task in tasks %}
+	    				<tr>
+			    			<th scope="row">{{ loop.index }}</th>
+			    			<td>{{ task.body }}</td>
+			    			<td>
+			    				{% if task.completed == True %}
+			    					Completada
+			    				{% else %}
+			    					Por completar
+			    				{% endif %}
+			    			</td>
+			    			<td>
+			    				<a class="btn btn-primary" href="{{ url_for('update', id=task.id) }}">Cambiar</a>
+			    			</td>
+			    		</tr>
+	        		{% endfor %}
+		    	</tbody>
+	    	</table>
+        {% else %}
+        	<div class="alert alert-warning alert-dismissible" role="alert">
+		    	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+		    		Aun no tienes tareas!
+		     	</div>
+        {% endif %}
+    </div>
+{% endblock %}
